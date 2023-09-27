@@ -332,12 +332,11 @@ class Tokenizer:
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    # parser.add_argument('songname')
-    # parser.add_argument('mmlfile')
-    # parser.add_argument('asmfile')
-    #
-    # args = parser.parse_args()
+    parser.add_argument('songname')
+    parser.add_argument('mmlfile')
+    parser.add_argument('asmfile')
 
-    # main = Main(args.songname, args.mmlfile, args.asmfile)
-    main = Main('TitleScreen', 'titlescreen.mml', 'C:/Users/Owner/Downloads/Decomps/pokecrystal-gbs-master/audio/music/titlescreen.asm')
+    args = parser.parse_args()
+
+    main = Main(args.songname, args.mmlfile, args.asmfile)
     main.main()
