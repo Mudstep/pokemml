@@ -216,10 +216,10 @@ class Main:
             elif cmd[1] == 'n':
                 assert len(args) == 3
                 self.asm_out.write(f'\tnote_type {args[0][1]}, {args[1][1]}, {args[2][1]}\n')
-            elif cmd[1] == '@p':
+            elif cmd[1] == '%p':
                 assert len(args) == 2
                 self.asm_out.write(f'\tvolume {args[0][1]}, {args[1][1]}\n')
-            elif cmd[1] == '@s':
+            elif cmd[1] == '%s':
                 assert len(args) == 1
                 self.asm_out.write(f'\tdrum_speed {args[0][1]}\n')
             elif cmd[1] == '&':
@@ -237,6 +237,30 @@ class Main:
             elif cmd[1] == ')':
                 assert len(args) == 0
                 self.asm_out.write('\tsound_ret\n')
+            elif cmd[1] == '%m':
+                assert len(args) == 3
+                self.asm_out.write(f'\tpitch_slide {args[0][1]}, {args[1][1]}, {args[2][1]}\n')
+            elif cmd[1] == '%t':
+                assert len(args) == 2
+                self.asm_out.write(f'\ttranspose {args[0][1]}, {args[1][1]}\n')
+            elif cmd[1] == '?s':
+                assert len(args) == 4
+                self.asm_out.write(f'\tsquare_note {args[0][1]}, {args[1][1]}, {args[2][1]}, {args[3][1]}\n')
+            elif cmd[1] == '?n':
+                assert len(args) == 4
+                self.asm_out.write(f'\tnoise_note {args[0][1]}, {args[1][1]}, {args[2][1]}, {args[3][1]}\n')
+            elif cmd[1] == '?p':
+                assert len(args) == 2
+                self.asm_out.write(f'\tpitch_sweep {args[0][1]}, {args[1][1]}\n')
+            elif cmd[1] == '?d':
+                assert len(args) == 4
+                self.asm_out.write(f'\tduty_cycle_pattern {args[0][1]}, {args[1][1]}, {args[2][1]}, {args[3][1]}\n')
+            elif cmd[1] == '?e':
+                assert len(args) == 0
+                self.asm_out.write('f\tforce_stereo_panning{args[0][1]}, {args[1][1]}\n')
+            elif cmd[1] == '?f':
+                assert len(args) == 0
+                self.asm_out.write('\tf\n')
 
         if not found_sub:
             if has_main_loop:
@@ -252,7 +276,8 @@ class Main:
 
 
 command_list = ('l', 'c+', 'c', 'd+', 'd', 'e', 'f+', 'f', 'g+', 'g', 'a+', 'a', 'b+', 'b', 'r',
- '<', '>', 'o', '[', ']', 'j', 'v', 'p', 't', 'k', 'm', '$', '|', '@p', '@s', 'n', 'x', '&', '(', ')')
+ '<', '>', 'o', '[', ']', 'j', 'v', 'p', 't', 'k', 'm', '$', '|', '%p', '%s', '%m', 'n', 'x', '&', '(', ')',
+ '?s', '?n', '?t', '?p', '?e', '?f')
 command_re = ('(' + '|'.join([re.escape(cmd) for cmd in command_list]) + ')')
 print(command_re)
 command_re = re.compile('(' + '|'.join([re.escape(cmd) for cmd in command_list]) + ')')
@@ -307,11 +332,12 @@ class Tokenizer:
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('songname')
-    parser.add_argument('mmlfile')
-    parser.add_argument('asmfile')
+    # parser.add_argument('songname')
+    # parser.add_argument('mmlfile')
+    # parser.add_argument('asmfile')
+    #
+    # args = parser.parse_args()
 
-    args = parser.parse_args()
-
-    main = Main(args.songname, args.mmlfile, args.asmfile)
+    # main = Main(args.songname, args.mmlfile, args.asmfile)
+    main = Main('TitleScreen', 'titlescreen.mml', 'C:/Users/Owner/Downloads/Decomps/pokecrystal-gbs-master/audio/music/titlescreen.asm')
     main.main()
