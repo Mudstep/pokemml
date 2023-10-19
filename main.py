@@ -2,10 +2,9 @@ import re, argparse
 
 
 class Main:
-    def __init__(self, f_name, f_mml, f_asm):
+    def __init__(self, f_mml, f_asm, f_name):
         self.out_name = f_name
         self.mml_in = open(f_mml)
-        self.asm_out = open(f_asm, 'w')
         self.mml_lines = self.mml_in.read().split('\n')
         self.mml_lines_index = 0
         self.channel_count = 0
@@ -14,6 +13,12 @@ class Main:
         for i in range(len(self.mml_lines)):
             l = self.mml_lines[i].split('#')[0]
             self.mml_lines[i] = l
+            if l.__contains__('@TITLE'):
+                self.out_name = l.split(' ')[1]
+            if l.__contains__('@OUTPUT'):
+                self.asm_out = l.split(' ')[1]
+
+        self.asm_out = open(f_asm, 'w')
 
     def main(self):
         self.asm_out.write(f'Music_{self.out_name}:')
@@ -335,7 +340,6 @@ if __name__ == '__main__':
     parser.add_argument('songname')
     parser.add_argument('mmlfile')
     parser.add_argument('asmfile')
-
     args = parser.parse_args()
 
     main = Main(args.songname, args.mmlfile, args.asmfile)
